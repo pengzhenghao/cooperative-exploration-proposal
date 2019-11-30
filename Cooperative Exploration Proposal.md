@@ -4,9 +4,11 @@
 
 
 
+> *子曰：三人行，必有我师。*
+
+
+
 <!--\*\*\* 注意：之前写过一个《Generate a Population of Diverse Agents in One Pass》的草稿，那个是同一个问题的不同故事-->
-
-
 
 <!--## ~~Abstract~~-->
 
@@ -17,8 +19,6 @@
 <!--~~利用joint dataset计算的到的policy embedding可以直接计算agent的差异，而无需autoencoder。~~-->
 <!--~~利用policy embedding计算得到的agent距离为最大化的目标，这就是“逆模仿学习”（IIL）~~-->
 <!--~~巧妙的融合方式将原始目标和IIL目标（1.仿循迹算法，2.基于performance升降，3.TNB）融合。-->
-
-
 
 ## Introduction
 
@@ -57,6 +57,8 @@
 
 总结，我们的方法是：**直接将其他agent采集到的数据，假装为原本策略的数据，从而输入PPO。**
 
+我们提出了两种训练方法：“learn from peers”和“learn from model”。前者是多agent采样的数据直接平均。后者是根据agent的performance对采样的数据进行加权平均。
+
 #### TD3
 
 观察到：
@@ -67,7 +69,7 @@
 我们指出：
 
 1. 可以将他人的state、action pair直接传入DDPG的replay buffer中进行训练。
-2. 我们既可以直接将这个“增广buffer”用来训练整个agent，也可以仅仅用其训练critic（事实上，这就是central critic）。
+2. 我们既可以直接将这个“增广buffer”用来训练训练critic（事实上，这就是central critic）。
 
 总结，我们的方法是：将他人的state、action pair直接传入DDPG的replay buffer中进行训练。
 
@@ -89,13 +91,21 @@
 
 ### On Policy 算法改进
 
+<img src="figs/927.png" alt="img" style="zoom: 67%;" />
+
+注意上图所示的两个PPO公式。用其他agent的策略 $\theta^{other}$ 来替换原来表示自己的旧策略的 $\theta^k$ 即可。我们设总共有K个agent参与“集训”。那么可供参考的来计算这个loss的策略就有K个（一个自己的旧策略，K-1个别人的策略）。
+
+我们想到：其实（1）采用旧策略（共1个）与（2）采用其他策略（共K-1个），可以得到K组不同的Loss。如果直接对K个策略所得到的Loss求平均，这就叫“**learn with peers**”。如果用performance来加权不同的loss，这就叫“**learn from model**（榜样）”。
+
 
 
 ### Off Policy 算法改进
 
+![image-20191130111715456](figs/image-20191130111715456.png)
 
+上图显示的是TD3算法。直接从所有人的采样中sample minibatch，然后假装什么事都没有直接去训critics就好了。这里同样可以引入“learn from peers”和“learn from model”的概念。
 
-
+由于TD3有个独立的critic，可以用来计算state-action value。所以我们可以更进一步，使用MADDPG中的central critic的概念，训练一个独立于每个agent的”super critic“，（不妨叫它教练coach…………）。
 
 
 
