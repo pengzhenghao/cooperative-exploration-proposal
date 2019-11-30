@@ -131,95 +131,16 @@
 1. 【图】横轴：采样数目，纵轴：performance。10agent群体的：mean、max、min，10个独立agent的mean、max、min（总共有三个数值，每个数值N个方法对比，每个方法都有3个种子，这样就有三个图，每个图N条线。在这里N=5）
 
 
+<!-- ## Related Work-->
 
+<!-- ### Exploration方面-->
 
+<!-- #### Influence-based Multi-agent Exploration-->
 
+<!--本文强调了MARL中不同agent的互动。提出了两种衡量一个agent对另一个agent的“influence”的指标，并以此提出两种通过鼓励互动的方法。问题在于，这里所鼓励的exploration是MARL层面上的探索，强调的是一个agent对另一个agent的影响（比如我去摁开关，你去爬电动楼梯这种合作），而非同质化的若干个agent，在单个agent自己的独立任务中的exploration。-->
 
+ <!-- #### Competitive Experience Replay-->
 
+<!--为了解决稀疏奖励的问题，本文用一对agent，如果A访问到B曾经访问过的相同的state，则A奖励-1，否则+1。思路很简单，问题在于：1. 只有两个agent。（否则reward就很难设计，比如一个state十几个人都去过了该怎么办？）2. 改变了reward的形态。（而我们不是在reward层面，而是在loss、gradient层面施加干预的。）-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Related Work
-
-### Exploration方面
-
-#### Influence-based Multi-agent Exploration
-
-本文强调了MARL中不同agent的互动。提出了两种衡量一个agent对另一个agent的“influence”的指标，并以此提出两种通过鼓励互动的方法。问题在于，这里所鼓励的exploration是MARL层面上的探索，强调的是一个agent对另一个agent的影响（比如我去摁开关，你去爬电动楼梯这种合作），而非同质化的若干个agent，在单个agent自己的独立任务中的exploration。
-
-
-
-#### Competitive Experience Replay
-
-为了解决稀疏奖励的问题，本文用一对agent，如果A访问到B曾经访问过的相同的state，则A奖励-1，否则+1。思路很简单，问题在于：1. 只有两个agent。（否则reward就很难设计，比如一个state十几个人都去过了该怎么办？）2. 改变了reward的形态。（而我们不是在reward层面，而是在loss、gradient层面施加干预的。）
-
-
-
-#### Unsupervised Learning and Exploration of Reachable Outcome Space 
-
-
-
-摘抄笔记：
-
-> 唯一一篇引用AURORA的文章。应该说已经站在了最前沿。
->
-> <img src="../Documents/%25E8%25AE%25BA%25E6%2596%2587%25E7%25AC%2594%25E8%25AE%25B0/figs/RuvQhwSuMYUM21-3MiVgvTM26LCPp8ki5pfjoRc4FmhL_yHSJThlkloXHQSSDcSqQ9kJLdbfbqxh1JfG4PC4j0HC_7KpwF1k2RMbChFctx5PPrkg6xtTns9TLdSmgFEF5drMGHCM.png" alt="img" style="zoom:25%;" />
->
-> 作者指出AURORA的observation和系统的low-dim state是直接相关的（比如robot在移动自己），然而如果robot的state和env的state的低维形式并不能直接拿到的话就不行了。
->
-> 本文使用novelty和suprise两个概念。novelty：outcome space的距离。surprise：AE的重构误差。
->
-> 本文引用了Novelty Search作为formulation。简单的概述NS如下：
->
-> 1. 定义一个从policy到BD（behaviour description）的函数
-> 2. 对于一个policy，计算它和K临近policy的distance（对应BD的欧几里得距离）
-> 3. 留下最novel的agent。mutate，回到步骤2。
->
-> 作者用了最后一帧的obs来做AE的输入。这点我非常的不认同。
->
-> 然后作者把novelty和suprise两个东西结合起来了，这点非常好。因为引入了AE才有的suprise，把它加入进来很合理（也很新颖）。
->
-> 作者在结论部分说，这个AE可以用来做retrieveal，因为只要把你想要的最后一帧outcome输入进去，得到内部表征，然后在population中寻找最接近它的那个agent，就完事儿了。
+<!-- #### Unsupervised Learning and Exploration of Reachable Outcome Space--> 
